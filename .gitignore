@@ -1,0 +1,9 @@
+# Virtua Env
+env/
+
+# Pycache - Todas pastas
+**/__pycache__/
+
+# Data Base
+#/blog/db.sqlite3
+
