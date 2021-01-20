@@ -7,10 +7,21 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 
 
+from django.contrib.auth.decorators import login_required
+
+
+# Meu pŕoprio Decorator
+from .decorators import unauthenticated_user
+
+
+# Restringe as Url que você pode entrar sem 
+# estar logado
+@login_required(login_url='login') 
 def home(request):
+    #print(request.user.is_authenticated) #False ou True
     return render(request,'home.html')
 
-
+@unauthenticated_user
 def login_page(request):
     
     if request.method == "POST":
@@ -20,7 +31,7 @@ def login_page(request):
 
         user = authenticate(
             request,
-            username=username,
+            username= username,
             password = password
             )
         
@@ -34,13 +45,21 @@ def login_page(request):
             
             messages.info(request,'Username OR password is incorrect')
 
+    
+    """       FIZ O MEU DECORATOR
+    # Não deixa entrar na Página de Login se você já estiver Logado
+    # Não dá para usar o Decorator de @login_required aqui...
+    if request.method == "GET" and request.user.is_authenticated == True:
+        return redirect('home')
+    """
+    
+
+
 
     return render(request,'login.html')
 
 
-
-
-
+@unauthenticated_user
 def register_page(request):
     #form = UserCreationForm()
     form = CreatUserForm()
@@ -56,4 +75,21 @@ def register_page(request):
     context = {
         'form':form
     }
+
+
+    """       FIZ O MEU DECORATOR
+    # Não deixa entrar na Página de Login se você já estiver Logado
+    # Não dá para usar o Decorator de @login_required aqui...
+    if request.method == "GET" and request.user.is_authenticated == True:
+        return redirect('home')
+    """
+
+
     return render(request,'register.html',context)
+
+# Restringe as Url que você pode entrar sem 
+# estar logado
+@login_required(login_url='login') 
+def logout_page(request):
+    logout(request)
+    return redirect('login')

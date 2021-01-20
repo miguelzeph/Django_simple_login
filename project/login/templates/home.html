@@ -6,7 +6,17 @@
 
 <h2>Home</h2>
 
+{% if request.user.is_authenticated is False %}
+
 Faça o seu <a style='color:salmon' href = '{% url "login" %}'>Login</a>
+
+<br>
+
+{%else%}
+Hello, {{request.user}}
+<span><a href = '{% url "logout" %}'>Logout</a></span>
+
+{%endif%}
 {%endblock%}
 
 
