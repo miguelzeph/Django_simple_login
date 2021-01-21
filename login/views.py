@@ -11,12 +11,13 @@ from django.contrib.auth.decorators import login_required
 
 
 # Meu pŕoprio Decorator
-from .decorators import unauthenticated_user
+from .decorators import unauthenticated_user,allowed_users
 
 
 # Restringe as Url que você pode entrar sem 
 # estar logado
-@login_required(login_url='login') 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
 def home(request):
     #print(request.user.is_authenticated) #False ou True
     return render(request,'home.html')
@@ -36,10 +37,8 @@ def login_page(request):
             )
         
         if user is not None:
-            
 
             login(request, user)
-            messages.info(request,'VOCÊ JÁ ESTÁ LOGADO')
             return redirect('home')
         else:
             
@@ -64,12 +63,12 @@ def register_page(request):
     #form = UserCreationForm()
     form = CreatUserForm()
     if request.method =="POST":
-       #form = UserCreationForm(request.POST)
-       form = CreatUserForm(request.POST)
-       if form.is_valid():
-           form.save()
-           messages.success(request, 'Acount successfuly created')
-           return redirect('login') # Depois que fizer o cadastro, vai para 
+        #form = UserCreationForm(request.POST)
+        form = CreatUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Acount successfuly created')
+            return redirect('login') # Depois que fizer o cadastro, vai para 
            #                        "name= login" que está na URLS.py
 
     context = {
