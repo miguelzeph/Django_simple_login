@@ -8,7 +8,6 @@ from django.shortcuts import redirect,render
 # se você está logado, por que quer entrar na página /login/ ou register/ ???
 
 # Então, quando você tentar ela redireciona pra home, bem interessante!!!
-
 def unauthenticated_user(view_func):
     def wrapper_func(request,*args,**kwargs):
         if request.user.is_authenticated:
@@ -22,6 +21,7 @@ def allowed_users(allowed_roles=[]):
     def decorator(view_func):
         def wrapper_function(request,*args,**kwargs):
             group = None
+
             if request.user.groups.exists():
                 group = request.user.groups.all()[0].name
             if group in allowed_roles:

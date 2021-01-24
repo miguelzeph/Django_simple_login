@@ -16,8 +16,8 @@ from .decorators import unauthenticated_user,allowed_users
 
 # Restringe as Url que você pode entrar sem 
 # estar logado
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+@login_required(login_url='login') # Tem que estar Logado ... se Não vai pra tela de Login
+@allowed_users(allowed_roles=['customer','admin']) # Tem que ver se está no grupo que permite entrar
 def home(request):
     #print(request.user.is_authenticated) #False ou True
     return render(request,'home.html')
