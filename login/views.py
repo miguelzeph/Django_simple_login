@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 
 # Meu pŕoprio Decorator
-from .decorators import unauthenticated_user,allowed_users
+from .decorators import unauthenticated_user,allowed_users,admin_only
 
 
 # Restringe as Url que você pode entrar sem 
@@ -21,6 +21,11 @@ from .decorators import unauthenticated_user,allowed_users
 def home(request):
     #print(request.user.is_authenticated) #False ou True
     return render(request,'home.html')
+
+@login_required(login_url='login')
+@admin_only
+def home_admin(request):
+    return render(request,'home_admin.html')
 
 @unauthenticated_user
 def login_page(request):
